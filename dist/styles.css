@@ -1,0 +1,28 @@
+@font-face {
+    font-family: MainFont;
+    src: url(./fonts/coolvetica\ rg.otf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: MainFont;
+}
+
+:root {
+
+}
+
+body {
+    height: 100vh;
+}
+
+.content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+
+
