@@ -25,8 +25,7 @@ describe("test Gameboard", () => {
     });
   });
 
-  it("create receiveHit() func that places a hit on coordinates", () => {
-    // testBoard.receiveHit(["A", 4]);
+  it("this is what the board should look like visually", () => {
     expect(testBoard.board).toEqual([
       [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
