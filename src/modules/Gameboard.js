@@ -77,7 +77,7 @@ class Gameboard {
       this.hits.push([x, y]);
       ship.hit();
     } else if (this.board[x][y].marker === "X") {
-      return
+      return;
     } else {
       this.board[x][y].marker = "O";
       this.misses.push([x, y]);
@@ -89,6 +89,16 @@ class Gameboard {
 
     if (this.board[x][y].marker === "X") return true;
     return false;
+  }
+
+  checkCoordinate(coordinate) {
+    const [x, y] = this.convertCoordinate(coordinate);
+    const ship = this.getShip([x, y], this.board);
+
+    return {
+      marker: this.board[x][y].marker,
+      ship: ship,
+    };
   }
 
   // return ship class in .ship property of board square for access
@@ -106,6 +116,23 @@ class Gameboard {
 
     if (regex.test(x) && regex2.test(y)) return true; //tests both coordinates to see if both indexes pass the conditions set before
     return false;
+  }
+
+  //converts this.misses array into new array containing misses in letter-number format ex: B5
+  getMisses() {
+    let convertedMisses = [];
+    this.misses.forEach((miss) => {
+      const missIndexOne = String.fromCharCode(65 + miss[0]); //convert first index of miss coordinate back into a letter
+      const newMiss = missIndexOne + (miss[1] + 1); // concatenate converted miss to remove comma and add one back to second index ex: [1, 4] -> "B%"
+      convertedMisses.push(newMiss);
+    });
+    return convertedMisses;
+  }
+
+  //when called, checks if all ships in this.ships have ship.sunk equal to true
+  allShipsSunk() {
+    if (this.ships.some((ship) => ship.sunk === false)) return this.ships;
+    return true;
   }
 }
 
