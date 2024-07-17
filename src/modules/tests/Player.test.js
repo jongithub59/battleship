@@ -6,26 +6,20 @@ describe("test Player", () => {
   let cpuPlayer;
 
   beforeEach(() => {
-    realPlayer = Player()
-    cpuPlayer = Player()
+    realPlayer = new Player('human')
+    cpuPlayer = new Player('cpu')
   });
 
   it("create a real player class", () => {
-    realPlayer.initHuman()
-    expect(realPlayer).toEqual({
-      'playerType': 'human',
-    });
+    expect(realPlayer.playerType).toEqual('human');
   });
 
   it("create a computer player class", () => {
-    cpuPlayer.initHuman();
-    expect(cpuPlayer).toEqual({
-      'playerType': 'cpu',
-    });
+    expect(cpuPlayer.playerType).toEqual('cpu');
   });
 
   it("check that player class has a gameboard", () => {
-    expect(cpuPlayer.board).toEqual([
+    expect(cpuPlayer.board.board).toEqual([
       [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
