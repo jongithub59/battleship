@@ -12,6 +12,7 @@
 
 :root {
     --blue: #20525a;
+    --text: silver;
 }
 
 body {
@@ -32,7 +33,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 120px;
-    color: silver;
+    color: var(--text);
     letter-spacing: 3px;
     height: 300px;
     width: 100%;
@@ -42,7 +43,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: auto;
-    padding: 20px;
+    padding: 25px;
     align-items: center;
     height: 900px;
     width: 70%;
@@ -56,17 +57,41 @@ body {
 }
 
 .board {
+    display: grid;
     margin: 20px;
     height: 700px;
     width: 700px;
-    background-color: var(--blue);
+    grid-template-rows: repeat(10, 70px);
+    grid-template-columns: repeat(10, 70px);
+    align-content: center;
+    justify-content: center;
+}
+
+.box {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    height: 64px;
+    width: 64px;
+    /* background-color: white; */
+    border: 3px solid black;
+    align-items: center;
+    justify-content: center;
+}
+
+.box:hover {
+    filter: brightness(80%);
+    transition: .2s;
+    cursor: pointer;
 }
 
 .reset-button {
     display: flex;
+    margin: 10px;
     height: 100px;
     width: 250px;
     background-color: var(--blue);
+    color: var(--text);
     align-items: center;
     justify-content: center;
     font-size: 50px;
