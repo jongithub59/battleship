@@ -20,23 +20,23 @@ describe("test Gameboard", () => {
 
     testBoard.board.forEach((innerArray) => {
       innerArray .forEach(cell => {
-        expect(cell).toEqual({});
+        expect(cell).toEqual(null);
       })
     });
   });
 
   it("this is what the board should look like visually", () => {
     expect(testBoard.board).toEqual([
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
     ]);
   });
 
@@ -49,6 +49,12 @@ describe("test Gameboard", () => {
   it("create receiveHit() func that places a hit on coordinates", () => {
       testBoard.receiveHit("A4");
       expect(testBoard.board[0][3].marker).toBe('O');
+  });
+
+  it("check that all boxes in a certain row are not marked when one is hit", () => {
+      //  testBoard.placeShip("B1", "B4");
+       testBoard.receiveHit("B4");
+    expect(testBoard.board[1][7]).toBe(null);
   });
 
   it("create checkCoordinate() func that checks for a ship on coordinates", () => {
@@ -87,10 +93,11 @@ describe("test Gameboard", () => {
     expect(testBoard.isValid("A12")).toBe(false);
   });
 
-  it("create allShipsSunk() func that checks if all ships are sunk", () => {
+  it("create getMisses() func that returns all misses on the board", () => {
     testBoard.receiveHit("E3");
     testBoard.receiveHit("E7");
     const ConvertedMisses = testBoard.getMisses()
+    expect(ConvertedMisses[0]).toBe("E3");
     expect(ConvertedMisses[1]).toBe("E7");
   });
 

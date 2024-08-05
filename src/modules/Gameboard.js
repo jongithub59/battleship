@@ -2,7 +2,7 @@ const Ship = require("./Ship");
 
 class Gameboard {
   constructor() {
-    this.board = Array.from({ length: 10 }, () => Array(10).fill({}));
+    this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     //key for coordinate conversion
     this.xCoordinates = "ABCDEFGHIJ";
     this.yCoordinates = "12345678910";
@@ -20,6 +20,10 @@ class Gameboard {
     const xIndex = this.xCoordinates.indexOf(xCoordinate);
     const yIndex = parseInt(yCoordinate, 10) - 1;
     return [xIndex, yIndex];
+  }
+
+  getBoard() {
+    return this.board
   }
 
   placeShip(startCoordinate, endCoordinate, ship) {
@@ -71,15 +75,15 @@ class Gameboard {
     const [x, y] = this.convertCoordinate(coordinate);
 
     //find and return ship class associated with the coordinate, mark as hit on board and ship itself, and add the hit to hits array if a ship is present
-    if (this.board[x][y].marker === "s") {
+    if (this.board[x][y] && this.board[x][y].marker === "s") {
       const ship = this.getShip([x, y]);
       this.board[x][y].marker = "X";
       this.hits.push([x, y]);
       ship.hit();
-    } else if (this.board[x][y].marker === "X") {
+    } else if (this.board[x][y] && this.board[x][y].marker === "X") {
       return;
     } else {
-      this.board[x][y].marker = "O";
+      this.board[x][y] = { marker: "O" };
       this.misses.push([x, y]);
     }
   }

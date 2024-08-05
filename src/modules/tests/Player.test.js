@@ -20,16 +20,16 @@ describe("test Player", () => {
 
   it("check that player class has a gameboard", () => {
     expect(cpuPlayer.board.board).toEqual([
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
     ]);
   });
 

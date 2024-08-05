@@ -73,7 +73,7 @@ body {
     justify-self: center;
     height: 64px;
     width: 64px;
-    /* background-color: white; */
+    background-color: aqua;
     border: 3px solid black;
     align-items: center;
     justify-content: center;
@@ -87,6 +87,7 @@ body {
 
 .reset-button {
     display: flex;
+    cursor: pointer;
     margin: 10px;
     height: 100px;
     width: 250px;
