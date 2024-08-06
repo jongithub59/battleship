@@ -61,12 +61,12 @@ class Gameboard {
     if (startX === endX) {
       // Vertical ship
       for (let y = startY; y <= endY; y++) {
-        this.board[startX][y] = { marker: "s", ship: ship || createdShip };
+        this.board[startX][y] = { marker: "S", ship: ship || createdShip };
       }
     } else if (startY === endY) {
       // Horizontal ship
       for (let x = startX; x <= endX; x++) {
-        this.board[x][startY] = { marker: "s", ship: ship || createdShip };
+        this.board[x][startY] = { marker: "S", ship: ship || createdShip };
       }
     }
   }
@@ -75,7 +75,7 @@ class Gameboard {
     const [x, y] = this.convertCoordinate(coordinate);
 
     //find and return ship class associated with the coordinate, mark as hit on board and ship itself, and add the hit to hits array if a ship is present
-    if (this.board[x][y] && this.board[x][y].marker === "s") {
+    if (this.board[x][y] && this.board[x][y].marker === "S") {
       const ship = this.getShip([x, y]);
       this.board[x][y].marker = "X";
       this.hits.push([x, y]);

@@ -10,6 +10,7 @@ class ScreenController {
         const gameContainer = document.querySelector(".game-container");
         const boardContainer = document.querySelector(".board-container")
     }
+
     createPlayerBoard(player) {
         const boardDisplay = document.querySelector("#board-one")
 
@@ -18,10 +19,16 @@ class ScreenController {
         const gameBoard = player.board.board
 
         gameBoard.forEach((array) => {
-            array.forEach(() =>{
+            array.forEach((cell) =>{
                 const gridElement = document.createElement('div')
                 gridElement.classList.add('box')
+                if (cell) {
+                    if (cell.marker === "S") gridElement.classList.add("ship");
+                    if (cell.marker === 'O') gridElement.classList.add("miss");
+                    if (cell.marker === "X") gridElement.classList.add("hit");
+                }
                 boardDisplay.appendChild(gridElement)
+
             })
         });
 
@@ -29,16 +36,32 @@ class ScreenController {
         
     }
 
-    createComputerBoard() {
+    createComputerBoard(cpu) {
+        const boardDisplay = document.querySelector("#board-two");
 
+        while (boardDisplay.lastChild)
+        boardDisplay.removeChild(boardDisplay.lastChild);
+
+        const gameBoard = cpu.board.board;
+
+        gameBoard.forEach((array) => {
+        array.forEach((cell) => {
+            const gridElement = document.createElement("div");
+            gridElement.classList.add("box");
+            if (cell) {
+            if (cell.marker === "S") gridElement.classList.add("ship");
+            if (cell.marker === "O") gridElement.classList.add("miss");
+            if (cell.marker === "X") gridElement.classList.add("hit");
+            }
+            boardDisplay.appendChild(gridElement);
+        });
+        });
+
+        return gameBoard;
     }
 
-    playRound() {
-
-    }
-
-    endGame(winner) {
-
+    revealEndGameUI(winner) {
+        
     }
 }
 

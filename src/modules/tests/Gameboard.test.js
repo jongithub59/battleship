@@ -43,7 +43,7 @@ describe("test Gameboard", () => {
   //tests for coordinates
   it("create placeShip() func that places a ship on coordinates", () => {
     testBoard.placeShip("A4", 'A6');
-    expect(testBoard.board[0][3].marker).toBe('s');
+    expect(testBoard.board[0][3].marker).toBe('S');
   });
 
   it("create receiveHit() func that places a hit on coordinates", () => {
@@ -61,7 +61,7 @@ describe("test Gameboard", () => {
     testBoard.placeShip('B1', 'B4');
     testBoard.receiveHit('B4')
     const result = testBoard.checkCoordinate('B2')
-    expect(result['marker'] === 's' || result['marker'] === 'X' ).toBe(true);
+    expect(result['marker'] === 'S' || result['marker'] === 'X' ).toBe(true);
   });
 
   it("create checkCoordinate() func that checks for a ship on coordinates and returns it", () => {
@@ -77,7 +77,7 @@ describe("test Gameboard", () => {
   it("test checkCoordinate() func for when coordinates are received backwards", () => {
     testBoard.placeShip("B4", "B1");
     const result = testBoard.checkCoordinate("B2");
-    expect(result['marker']).toBe("s");
+    expect(result['marker']).toBe("S");
   });
 
    it("create getShip() func that returns a ship object on a given coordinate", () => {

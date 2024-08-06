@@ -79,6 +79,18 @@ body {
     justify-content: center;
 }
 
+.ship {
+    background-color: darkgrey;
+}
+
+.hit {
+    background-color: rgb(180, 66, 66);
+}
+
+.miss {
+    background-color: rgb(45, 45, 139);
+}
+
 .box:hover {
     filter: brightness(80%);
     transition: .2s;
