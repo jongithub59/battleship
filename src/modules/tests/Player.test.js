@@ -34,8 +34,8 @@ describe("test Player", () => {
   });
 
   it("test that Gameboard funcs like placeShip() are accessible from the Player class", () => {
-    realPlayer.board.placeShip('B1', 'B4')
-    const result = realPlayer.board.checkCoordinate("B2");
+    realPlayer.board.placeShip('B1', 4)
+    const result = realPlayer.board.checkCoordinate("B1");
     expect(result["marker"]).toBe("S");
   });
 

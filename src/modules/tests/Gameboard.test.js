@@ -42,8 +42,22 @@ describe("test Gameboard", () => {
 
   //tests for coordinates
   it("create placeShip() func that places a ship on coordinates", () => {
-    testBoard.placeShip("A4", 'A6');
-    expect(testBoard.board[0][3].marker).toBe('S');
+    testBoard.placeShip("A6", 3);
+    expect(testBoard.board[0][5].marker).toBe('S');
+    expect(testBoard.board[0][6].marker).toBe("S");
+    expect(testBoard.board[0][7].marker).toBe("S");
+  });
+
+  it("create placeShip() func that places a ship on coordinates vertically", () => {
+    testBoard.placeShip("C6", 3, true);
+    expect(testBoard.board[2][5].marker).toBe("S");
+    expect(testBoard.board[3][5].marker).toBe("S");
+    expect(testBoard.board[4][5].marker).toBe("S");
+  });
+
+  it("ctest placeShip() func that places a ship on coords with a ship class", () => {
+    testBoard.placeShip("A6",'', false, testShip);
+    expect(testBoard.board[0][6].marker).toBe("S");
   });
 
   it("create receiveHit() func that places a hit on coordinates", () => {
@@ -52,21 +66,21 @@ describe("test Gameboard", () => {
   });
 
   it("check that all boxes in a certain row are not marked when one is hit", () => {
-      //  testBoard.placeShip("B1", "B4");
+       testBoard.placeShip("B1", 4);
        testBoard.receiveHit("B4");
     expect(testBoard.board[1][7]).toBe(null);
   });
 
   it("create checkCoordinate() func that checks for a ship on coordinates", () => {
-    testBoard.placeShip('B1', 'B4');
+    testBoard.placeShip('B1', 4);
     testBoard.receiveHit('B4')
     const result = testBoard.checkCoordinate('B2')
     expect(result['marker'] === 'S' || result['marker'] === 'X' ).toBe(true);
   });
 
   it("create checkCoordinate() func that checks for a ship on coordinates and returns it", () => {
-    testBoard.placeShip("A1", "A5");
-    const result = testBoard.checkCoordinate("A2");
+    testBoard.placeShip("A2", 5);
+    const result = testBoard.checkCoordinate("A4");
     expect(result['ship']).toEqual({
       'hits': 0,
       'length': 5,
@@ -74,15 +88,9 @@ describe("test Gameboard", () => {
     });
   });
 
-  it("test checkCoordinate() func for when coordinates are received backwards", () => {
-    testBoard.placeShip("B4", "B1");
-    const result = testBoard.checkCoordinate("B2");
-    expect(result['marker']).toBe("S");
-  });
-
    it("create getShip() func that returns a ship object on a given coordinate", () => {
-     testBoard.placeShip("A1", "A4", testShip);
-     expect(testBoard.getShip([0, 0])).toBe(testShip);
+     testBoard.placeShip("A1", '', false, testShip);
+     expect(testBoard.getShip('A1')).toBe(testShip);
    });
 
   it("create isValid() func that checks if coordinate fits on the board", () => {
@@ -91,6 +99,19 @@ describe("test Gameboard", () => {
 
   it("create isValid() func that checks if coordinate fits on the board", () => {
     expect(testBoard.isValid("A12")).toBe(false);
+  });
+
+  it("create isValid() func that checks if ship will fit on board", () => {
+    expect(testBoard.isValid("A1", 11)).toBe(false);
+  });
+
+  it("test placeShip to return if ship placement is expected to go out of bounds", () => {
+    testBoard.placeShip("A6", 5);
+    expect(testBoard.board[0][5]).toEqual(null);
+    expect(testBoard.board[0][6]).toEqual(null);
+    expect(testBoard.board[0][7]).toEqual(null);
+    expect(testBoard.board[0][8]).toEqual(null);
+    expect(testBoard.board[0][9]).toEqual(null);
   });
 
   it("create getMisses() func that returns all misses on the board", () => {
@@ -102,7 +123,7 @@ describe("test Gameboard", () => {
   });
 
   it("create allShipsSunk() func that checks if all ships are sunk", () => {
-    testBoard.placeShip("B1", "B4");
+    testBoard.placeShip("B1", 4);
     testBoard.receiveHit('B1');
     testBoard.receiveHit("B3");
     testBoard.receiveHit("B2");

@@ -26,49 +26,39 @@ class Gameboard {
     return this.board
   }
 
-  placeShip(startCoordinate, endCoordinate, ship) {
+  placeShip(startCoordinate, length = '', isVertical = false, ship = '') {
     let createdShip;
 
-    if (!this.isValid(startCoordinate) || !this.isValid(endCoordinate)) {
+    if (!this.isValid(startCoordinate, length)) {
       return false;
     }
 
-    //convert coordinates to array index coords
+    // //convert coordinates to array index coords
     let [startX, startY] = this.convertCoordinate(startCoordinate);
-    let [endX, endY] = this.convertCoordinate(endCoordinate);
 
-    // Ensure coordinates are in correct order for placement
-    if (startX > endX || startY > endY) {
-      [startX, endX] = [Math.min(startX, endX), Math.max(startX, endX)];
-      [startY, endY] = [Math.min(startY, endY), Math.max(startY, endY)];
-    }
-
-    // Determine ship length if no ship class is provided
+    
+    //crate ship class if one doesn;t exist and add ship to the board's ships array to access later
     if (!ship) {
-      let length;
-      if (startY === endY) {
-        length = endX - startX + 1; // Horizontal ship
-      } else {
-        length = endY - startY + 1; // Vertical ship
-      }
       createdShip = new Ship(length); //create ship object and add it to ships array
       this.ships.push(createdShip);
     } else {
       this.ships.push(ship);
+      length = ship.length
     }
-
+    
     // Place ship on board
-    if (startX === endX) {
-      // Vertical ship
-      for (let y = startY; y <= endY; y++) {
+    if (isVertical === false) {
+      for (let y = startY; y <= (length + startY) -1; y++) {
         this.board[startX][y] = { marker: "S", ship: ship || createdShip };
       }
-    } else if (startY === endY) {
-      // Horizontal ship
-      for (let x = startX; x <= endX; x++) {
+    }
+
+    if (isVertical === true) {
+      for (let x = startX; x <= (length + startX) - 1; x++) {
         this.board[x][startY] = { marker: "S", ship: ship || createdShip };
       }
     }
+
   }
 
   receiveHit(coordinate) {
@@ -76,7 +66,7 @@ class Gameboard {
 
     //find and return ship class associated with the coordinate, mark as hit on board and ship itself, and add the hit to hits array if a ship is present
     if (this.board[x][y] && this.board[x][y].marker === "S") {
-      const ship = this.getShip([x, y]);
+      const ship = this.getShip(coordinate);
       this.board[x][y].marker = "X";
       this.hits.push([x, y]);
       ship.hit();
@@ -97,7 +87,7 @@ class Gameboard {
 
   checkCoordinate(coordinate) {
     const [x, y] = this.convertCoordinate(coordinate);
-    const ship = this.getShip([x, y], this.board);
+    const ship = this.getShip(coordinate)
 
     return {
       marker: this.board[x][y].marker,
@@ -106,19 +96,22 @@ class Gameboard {
   }
 
   // return ship class in .ship property of board square for access
-  getShip([x, y]) {
+  getShip(coordinate) {
+    const [x, y] = this.convertCoordinate(coordinate)
     return this.board[x][y].ship;
   }
 
-  isValid(coordinate) {
-    //split coordinate
-    const x = coordinate[0];
-    const y = coordinate.slice(1);
+  isValid(coordinate, length) {
+    //convert coordinate
+    const [x, y] = this.convertCoordinate(coordinate);
 
-    const regex = /^[A-J]+$/; //contains A-J the only valid coordinates for the x-axis
-    const regex2 = /^([1-9]|10)$/; //contains 1-10 the only valid y-axis coordinates
+    const regex = /^([0-9])$/; // use this to match numbers 0 through 9 since converted coords are in index form so -1
 
-    if (regex.test(x) && regex2.test(y)) return true; //tests both coordinates to see if both indexes pass the conditions set before
+    //tests coordinates
+    if (regex.test(x) && regex.test(y)) { //check if converted coords fit on 10x10 board
+      if (y + length >= 10 || x + length >= 10) return false; //then check if it will go off board bounds by adding the length
+      return true
+    }
     return false;
   }
 
