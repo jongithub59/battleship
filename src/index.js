@@ -1,18 +1,15 @@
-const ScreenController = require('./modules/ScreenController')
-const Player = require("./modules/Player");
+const EventHandler = require("./modules/eventHandler.js")
 
+const gameHandler = new EventHandler()
+gameHandler.startGame() //this func is all thats needs to be called to run the game  
 
-const screenController = new ScreenController()
-const player = new Player('human')
-player.board.placeShip('B1', 4)
-player.board.receiveHit("B1");
-player.board.receiveHit('A1')
-player.board.receiveHit("A2");
-player.board.receiveHit("A7");
-const cpu = new Player('cpu')
-cpu.board.placeShip('C4', 4)
-screenController.createPlayerBoard(player)
-screenController.createComputerBoard(cpu)
+// MOCK
+gameHandler.player.placeShip('B1', 4)
+gameHandler.player.receiveHit('B1')
+gameHandler.player.receiveHit('A1')
+gameHandler.player.receiveHit("A2");
+gameHandler.player.receiveHit("A7");
+gameHandler.computer.placeShip('C4', 4)
+gameHandler.updateBoards()
+// MOCK
 
-window.screenController = screenController
-window.player = player;
