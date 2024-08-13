@@ -14,12 +14,8 @@ class ScreenController {
     createPlayerBoard(player) {
         const boardDisplay = document.querySelector("#board-one")
 
-        while (boardDisplay.lastChild) {
-            boardDisplay.removeChild(boardDisplay.lastChild);
-            // boardDisplay.lastChild.remove()
-            console.log("yes")
-        }
-        console.log(boardDisplay.lastChild)
+        while (boardDisplay.lastChild)  boardDisplay.removeChild(boardDisplay.lastChild);
+
         const gameBoard = player.board.board
 
         this.generateBoard(gameBoard, boardDisplay);
@@ -36,7 +32,10 @@ class ScreenController {
     }
 
     generateBoard(board, boardDisplay) {
-        board.forEach((array) => {
+      //counter vars for making coordinates in each cell to access for oher methods
+      let i = 0
+      board.forEach((array) => {
+          let j = 0
           array.forEach((cell) => {
             const gridElement = document.createElement("div");
             gridElement.classList.add("box");
@@ -45,8 +44,12 @@ class ScreenController {
               if (cell.marker === "O") gridElement.classList.add("miss");
               if (cell.marker === "X") gridElement.classList.add("hit");
             }
+            gridElement.dataset.x = i
+            gridElement.dataset.y = j
             boardDisplay.appendChild(gridElement);
+            j++
           });
+          i++
         });
     }
 

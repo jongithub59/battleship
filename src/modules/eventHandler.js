@@ -48,9 +48,13 @@ class EventHandler {
    }
 
    clickHandler(e) {
-      const clickedCell = e.target
-      return console.log(clickedCell)
+      if (e.target.classList.value === "board") return
+      const xCoordinate = e.target.dataset.x
+      const yCoordinate = e.target.dataset.y
+      const coordinate = [ Number(xCoordinate), Number(yCoordinate) ]
+      return console.log(coordinate)
    }
+
 }
 
 module.exports = EventHandler

@@ -1,4 +1,4 @@
-const EventHandler = require("./modules/eventHandler.js")
+const EventHandler = require("./modules/EventHandler.js");
 
 const gameHandler = new EventHandler()
 gameHandler.startGame() //this func is all thats needs to be called to run the game  
