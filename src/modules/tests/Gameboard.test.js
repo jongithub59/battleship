@@ -105,6 +105,17 @@ describe("test Gameboard", () => {
     expect(testBoard.isValid("A1", 11)).toBe(false);
   });
 
+  it("test checkShipCollision() func to see if it checks for existing ship on coordinate", () => {
+    testBoard.placeShip("A2", 5);
+    expect(testBoard.checkShipCollision(0, 1, 5, false)).toBe(true);
+  });
+
+  it("test checkShipCollision() func to see if ship was not placed when a collision was found", () => {
+    testBoard.placeShip("A2", 2);
+    testBoard.placeShip("A3", 4);
+    expect(testBoard.getShip('A4')).toBe(false);
+  });
+
   it("test placeShip to return if ship placement is expected to go out of bounds", () => {
     testBoard.placeShip("A6", 5);
     expect(testBoard.board[0][5]).toEqual(null);

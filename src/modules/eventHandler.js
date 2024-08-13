@@ -14,7 +14,9 @@ class EventHandler {
       this.ui.createPlayerBoard(this.player)
       this.ui.createComputerBoard(this.computer)
 
-      //need funcs for adding eventlisteners to run the other funcs that run the game here, meaning startGame() is the only func that needs to run
+      document.querySelector('.reset-button').removeEventListener('click', this.resetGame)
+      this.addBoardListeners()
+      this.addResetListener()
    }
 
    updateBoards() {// this will update the boards at anytime with their new inputs
@@ -23,6 +25,32 @@ class EventHandler {
    }
 
    //funcs for running the game off event listeners here
+   addBoardListeners() {
+      const playerBoard = document.querySelector('#board-one')
+      const computerBoard = document.querySelector("#board-two");
+
+      playerBoard.addEventListener('click', this.clickHandler)
+      computerBoard.addEventListener('click', this.clickHandler)
+   }
+
+   addResetListener() {
+      const reset = document.querySelector('.reset-button')
+      reset.addEventListener('click', this.resetGame)
+   }
+
+   resetGame = () => {
+      document.querySelector("#board-one").removeEventListener("click", this.clickHandler);
+      document.querySelector("#board-two").removeEventListener("click", this.clickHandler);
+      this.player = new Player("human");
+      this.computer = new Player("cpu");
+      this.currentPlayer = this.player;
+      this.startGame()
+   }
+
+   clickHandler(e) {
+      const clickedCell = e.target
+      return console.log(clickedCell)
+   }
 }
 
 module.exports = EventHandler
