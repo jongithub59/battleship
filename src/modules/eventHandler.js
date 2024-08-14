@@ -7,7 +7,8 @@ class EventHandler {
       this.ui = new UI()
       this.player = new Player("human");
       this.computer = new Player("cpu");
-      this.currentPlayer = this.player // the player who is the "active player"
+      this.activePlayer = this.player // the player whose turn it is, making their move
+      this.inactivePlayer = this.computer //player who is having a move made on them
     }
    startGame() { //run setup funcs from ScreenController.js here since index.js will only import this file
       this.ui.setupGame()
@@ -24,13 +25,12 @@ class EventHandler {
       this.ui.createComputerBoard(this.computer);
    }
 
-   //funcs for running the game off event listeners here
    addBoardListeners() {
       const playerBoard = document.querySelector('#board-one')
       const computerBoard = document.querySelector("#board-two");
 
-      playerBoard.addEventListener('click', this.clickHandler)
-      computerBoard.addEventListener('click', this.clickHandler)
+      playerBoard.addEventListener('click', this.attackHandler)
+      computerBoard.addEventListener('click', this.attackHandler)
    }
 
    addResetListener() {
@@ -38,21 +38,40 @@ class EventHandler {
       reset.addEventListener('click', this.resetGame)
    }
 
+   //reset game by assigning new players to create fresh boards and resetting the turn
    resetGame = () => {
       document.querySelector("#board-one").removeEventListener("click", this.clickHandler);
       document.querySelector("#board-two").removeEventListener("click", this.clickHandler);
       this.player = new Player("human");
       this.computer = new Player("cpu");
-      this.currentPlayer = this.player;
+      this.activePlayer = this.player;
+      this.inactivePlayer = this.computer
       this.startGame()
    }
 
-   clickHandler(e) {
-      if (e.target.classList.value === "board") return
-      const xCoordinate = e.target.dataset.x
-      const yCoordinate = e.target.dataset.y
-      const coordinate = [ Number(xCoordinate), Number(yCoordinate) ]
-      return console.log(coordinate)
+   attackHandler = (e) => {
+     if (!e.target.classList.value.includes('box')) return; //return if a valid cell is not clicked
+     if (e.target.dataset.player === this.activePlayer.playerType) return; //return if a player clicks on their own board
+     // use stored data to make a usable coordinate for receiveHit() and identify valid hit locations
+     const x = e.target.dataset.x;
+     const y = e.target.dataset.y;
+     const marker = e.target.dataset.marker
+     if (marker === 'X' || marker === 'O') return //if a hit location is clicked, return to allow new attempt
+     const coordinate = [Number(x), Number(y)]; //create the coordinate, forcing them to be numbers
+     this.inactivePlayer.board.receiveHit(coordinate)
+     this.updateBoards();
+     this.switchTurns();
+   }
+   
+   // advance to the next turn by swapping the active player
+   switchTurns() {
+      if (this.activePlayer.playerType === 'human') {
+         this.activePlayer = this.computer
+         this.inactivePlayer = this.player
+      } else {
+         this.activePlayer = this.player;
+         this.inactivePlayer = this.computer;
+      }
    }
 
 }

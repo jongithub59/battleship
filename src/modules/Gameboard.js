@@ -3,7 +3,7 @@ const Ship = require("./Ship");
 class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
-    //key for coordinate conversion
+    //key for coordinate conversion, not needed anymore
     this.xCoordinates = "ABCDEFGHIJ";
     this.yCoordinates = "12345678910";
     this.ships = [];
@@ -11,30 +11,28 @@ class Gameboard {
     this.hits = [];
   }
 
+  //no longer needed since board cell will already contain coordinates in converted format
   // convert taken coordinate (B4) into indexs that the 2D board array can use ([1, 3])
-  convertCoordinate(coordinate) {
-    //split coordinate in two
-    const xCoordinate = coordinate[0];
-    const yCoordinate = coordinate.slice(1);
-    //convert each index to respective array index
-    const xIndex = this.xCoordinates.indexOf(xCoordinate);
-    const yIndex = parseInt(yCoordinate, 10) - 1;
-    return [xIndex, yIndex];
-  }
+  // convertCoordinate(coordinate) {
+  //   //split coordinate in two
+  //   const xCoordinate = coordinate[0];
+  //   const yCoordinate = coordinate.slice(1);
+  //   //convert each index to respective array index
+  //   const xIndex = this.xCoordinates.indexOf(xCoordinate);
+  //   const yIndex = parseInt(yCoordinate, 10) - 1;
+  //   return [xIndex, yIndex];
+  // }
 
   getBoard() {
     return this.board;
   }
 
-  placeShip(startCoordinate, length = "", isVertical = false, ship = "") {
+  placeShip([startX, startY],length, isVertical = false, ship = "") {
     let createdShip;
 
-    if (!this.isValid(startCoordinate, length)) {
-      return false;
-    }
+    if (!this.isValid([startX, startY], length)) return false;
 
     // //convert coordinates to array index coords
-    let [startX, startY] = this.convertCoordinate(startCoordinate);
 
     //check that the ship to be placed does not overlap with an existing ship
     const shipCollision = this.checkShipCollision(
@@ -75,33 +73,30 @@ class Gameboard {
     }
   }
 
-  receiveHit(coordinate) {
-    const [x, y] = this.convertCoordinate(coordinate);
-
+  receiveHit([x, y]) {
     //find and return ship class associated with the coordinate, mark as hit on board and ship itself, and add the hit to hits array if a ship is present
-    if (this.board[x][y] && this.board[x][y].marker === "S") {
-      const ship = this.getShip(coordinate);
-      this.board[x][y].marker = "X";
-      this.hits.push([x, y]);
-      ship.hit();
-    } else if (this.board[x][y] && this.board[x][y].marker === "X") {
-      return;
-    } else {
+    if (this.board[x][y] === null) {
       this.board[x][y] = { marker: "O" };
       this.misses.push([x, y]);
+      return true
+    } else if (this.board[x][y].marker === "X") {
+      return false;
+    } else if (this.board[x][y].marker === "S") {
+      const ship = this.getShip([x, y]);
+      this.board[x][y] = { marker: "X" };
+      this.hits.push([x, y]);
+      ship.hit();
+      return true;
     }
   }
 
-  checkHit(coordinate) {
-    const [x, y] = this.convertCoordinate(coordinate);
-
+  checkHit([x, y]) {
     if (this.board[x][y].marker === "X") return true;
     return false;
   }
 
-  checkCoordinate(coordinate) {
-    const [x, y] = this.convertCoordinate(coordinate);
-    const ship = this.getShip(coordinate);
+  checkCoordinate([x, y]) {
+    const ship = this.getShip([x, y]);
 
     return {
       marker: this.board[x][y].marker,
@@ -110,8 +105,7 @@ class Gameboard {
   }
 
   // return ship class in .ship property of board square for access
-  getShip(coordinate) {
-    const [x, y] = this.convertCoordinate(coordinate);
+  getShip([x, y]) {
     if (this.board[x][y] === null) return false;
     return this.board[x][y].ship;
   }
@@ -129,10 +123,7 @@ class Gameboard {
   // H -  -  -  -  -  -  -  -  -  -
   // I -  -  -  -  -  -  -  -  -  -
   // J -  -  -  -  -  -  -  -  -  -
-  isValid(coordinate, length) {
-    //convert coordinate
-    const [x, y] = this.convertCoordinate(coordinate);
-
+  isValid([x, y], length) {
     const regex = /^([0-9])$/; // use this to match numbers 0 through 9 since converted coords are in index form so -1
 
     //tests coordinates

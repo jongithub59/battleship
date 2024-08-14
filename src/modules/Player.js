@@ -7,16 +7,16 @@ class Player {
     }
 
     //functions that will run without needing to call this.board (ex: player.board.getMisses() vs player.getMisses())
-    receiveHit(coordinate) {
-        this.board.receiveHit(coordinate)
+    receiveHit([x, y]) {
+        this.board.receiveHit([x, y])
     }
 
     checkHit(coordinate) {
         this.board.checkHit(coordinate)
     }
 
-    placeShip(startCoordinate, length = '', isVertical = false, ship = '') {
-        this.board.placeShip(startCoordinate, length, isVertical, ship)
+    placeShip(coordinate, length = '', isVertical = false, ship = '') {
+        this.board.placeShip(coordinate, length, isVertical, ship)
     }
 
     getMisses() {
