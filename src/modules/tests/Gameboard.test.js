@@ -4,10 +4,12 @@ const Ship = require('../Ship')
 describe("test Gameboard", () => {
   let testBoard;    
   let testShip;
+  let invalidShip;
 
   beforeEach(() => {
     testBoard = new Gameboard
-    testShip = new Ship(4);
+    testShip = new Ship(4)
+    invalidShip = new Ship(11)
   });
 
   //test for class initialization
@@ -55,19 +57,24 @@ describe("test Gameboard", () => {
     expect(testBoard.board[4][5].marker).toBe("S");
   });
 
-  it("ctest placeShip() func that places a ship on coords with a ship class", () => {
+  it("test placeShip() func that places a ship on coords with a ship class", () => {
     testBoard.placeShip([0, 5], "", false, testShip);
     expect(testBoard.board[0][6].marker).toBe("S");
   });
 
+  it("test generateRandomBoard to place ships randomly, if successful, all ship will be on this.ships", () => {
+    testBoard.generateRandomBoard();
+    expect(testBoard.ships.length).toBe(5);
+  });
+
   it("create receiveHit() func that places a hit on coordinates", () => {
-      testBoard.receiveHit([0, 3]);
-      expect(testBoard.board[0][3].marker).toBe('O');
+    testBoard.receiveHit([0, 3]);
+    expect(testBoard.board[0][3].marker).toBe('O');
   });
 
   it("check that all boxes in a certain row are not marked when one is hit", () => {
-       testBoard.placeShip([1, 0], 4);
-       testBoard.receiveHit([1, 4]);
+    testBoard.placeShip([1, 0], 4);
+    testBoard.receiveHit([1, 4]);
     expect(testBoard.board[1][7]).toBe(null);
   });
 
@@ -105,15 +112,38 @@ describe("test Gameboard", () => {
     expect(testBoard.isValid([0, 0], 11)).toBe(false);
   });
 
+   it("create isValid() func that checks if ship object will fit on board", () => {
+    expect(testBoard.isValid([0, 0], '', invalidShip)).toBe(false);
+   });
+
   it("test checkShipCollision() func to see if it checks for existing ship on coordinate", () => {
     testBoard.placeShip([0, 1], 5);
-    expect(testBoard.checkShipCollision(0, 1, 5, false)).toBe(true);
+    expect(testBoard.checkShipCollision([0, 1], 5, false)).toBe(true);
   });
 
   it("test checkShipCollision() func to see if ship was not placed when a collision was found", () => {
     testBoard.placeShip([0, 1], 2);
     testBoard.placeShip([0, 2], 4);
-    expect(testBoard.getShip([1, 3])).toBe(false);
+    expect(testBoard.board[0][3]).toBe(null);
+  });
+
+    it("test checkShipCollision() func to see if vertical ship was not placed when a collision was found", () => {
+      testBoard.placeShip([1, 0], 4);
+      testBoard.placeShip([0, 0], 5, true);
+      expect(testBoard.board[2][0]).toBe(null);
+    });
+
+  it("test checkShipCollision() func to see if ship was not placed when a collision was found", () => {
+    testBoard.placeShip([0, 1], '', false, testShip);
+    testBoard.placeShip([0, 4], 4);
+    expect(testBoard.board[0][1].marker).toBe('S');
+    expect(testBoard.board[0][2].marker).toBe("S");
+    expect(testBoard.board[0][3].marker).toBe("S");
+    expect(testBoard.board[0][4].marker).toBe("S");
+    expect(testBoard.getShip([0, 5])).toBe(false);
+    expect(testBoard.getShip([0, 6])).toBe(false);
+    expect(testBoard.getShip([0, 7])).toBe(false);
+    expect(testBoard.getShip([0, 8])).toBe(false);
   });
 
   it("test placeShip to return if ship placement is expected to go out of bounds", () => {

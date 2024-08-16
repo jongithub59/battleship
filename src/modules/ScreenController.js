@@ -1,9 +1,5 @@
-const Gameboard = require("./Gameboard");
-const Ship = require("./Ship");
-const Player = require("./Player");
 
 //set up initial User Interface DOM elements so event listeners can be added to them
-
 class ScreenController {
     setupGame() {
         const reset = document.querySelector(".reset-button") 
@@ -41,7 +37,10 @@ class ScreenController {
           const gridElement = document.createElement("div");
           gridElement.classList.add("box");
           if (cell) {
-            if (cell.marker === "S") gridElement.classList.add("ship");
+            if (cell.marker === "S") {
+              // Only adds ship class to player's board to keep computers board hidden to the player
+              if (player.playerType === 'human') gridElement.classList.add("ship");
+            }
             if (cell.marker === "O") gridElement.classList.add("miss");
             if (cell.marker === "X") gridElement.classList.add("hit");
             gridElement.dataset.marker = cell.marker //needs to be here since in error will occur if null is read

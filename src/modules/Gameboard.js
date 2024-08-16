@@ -11,66 +11,79 @@ class Gameboard {
     this.hits = [];
   }
 
-  //no longer needed since board cell will already contain coordinates in converted format
-  // convert taken coordinate (B4) into indexs that the 2D board array can use ([1, 3])
-  // convertCoordinate(coordinate) {
-  //   //split coordinate in two
-  //   const xCoordinate = coordinate[0];
-  //   const yCoordinate = coordinate.slice(1);
-  //   //convert each index to respective array index
-  //   const xIndex = this.xCoordinates.indexOf(xCoordinate);
-  //   const yIndex = parseInt(yCoordinate, 10) - 1;
-  //   return [xIndex, yIndex];
-  // }
+  // Place the 5 different ships of Battleship randomly across the board
+  generateRandomBoard() {
+    const carrier = new Ship(5);
+    const battleship = new Ship(4);
+    const destroyer = new Ship(3);
+    const submarine = new Ship(3);
+    const patrolBoat = new Ship(2);
+
+    const ships = [];
+
+    ships.push(carrier, battleship, destroyer, submarine, patrolBoat);
+
+    // loop through each ship to generate new coordinates and orientation until valid ships are placed
+    ships.forEach((ship) => {
+      while (true) {
+        const startX = Math.floor(Math.random() * 10);
+        const startY = Math.floor(Math.random() * 10);
+        const isVertical = Math.random() < 0.5;
+        if (this.placeShip([startX, startY], "", isVertical, ship)) {
+          break;
+        }
+      }
+      return true;
+    });
+  }
 
   getBoard() {
     return this.board;
   }
 
-  placeShip([startX, startY],length, isVertical = false, ship = "") {
+  placeShip([startX, startY], length, isVertical = false, ship) {
     let createdShip;
 
-    if (!this.isValid([startX, startY], length)) return false;
+    // Loop until the ship is placed successfully
+    while (true) {
+      // Check if the coordinates + length are within valid bounds
+      if (!this.isValid([startX, startY], length, ship)) {
+        // If not valid, return false
+        return false;
+      }
 
-    // //convert coordinates to array index coords
+      // Check if the new ship overlaps with any existing ship
+      if (this.checkShipCollision([startX, startY], length, isVertical, ship)) {
+        // If there's a collision, return false and let the external function handle new coordinates
+        return false;
+      }
 
-    //check that the ship to be placed does not overlap with an existing ship
-    const shipCollision = this.checkShipCollision(
-      startX,
-      startY,
-      length,
-      isVertical,
-      ship
-    );
-
-    //if a the new ship does overlap, return false
-    if (shipCollision === true) {
-      return false;
+      // If no collision and the placement is valid, break out of the loop
+      break;
     }
 
-    //crate ship class if one doesn;t exist and add ship to the board's ships array to access later
+    // Create the ship if it doesn't already exist and add it to the board's ships array
     if (!ship) {
-      createdShip = new Ship(length); //create ship object and add it to ships array
+      createdShip = new Ship(length);
       this.ships.push(createdShip);
     } else {
       this.ships.push(ship);
       length = ship.length;
     }
-
-    // Place ship on board
+    // Place the ship on the board horizontally or vertically
     if (isVertical === false) {
-      for (let y = startY; y <= length + startY - 1; y++) {
-        this.board[startX][y] = {};
-        this.board[startX][y].marker = "S";
-        this.board[startX][y].ship = ship || createdShip;
+      //increment the coordinate related to y-axis to mark cells vertically to make the ship 
+      for (let y = startY; y < length + startY; y++) {
+        this.board[startX][y] = { marker: "S", ship: ship || createdShip,};
       }
-    }
-
-    if (isVertical === true) {
-      for (let x = startX; x <= length + startX - 1; x++) {
+    } else {
+      for (let x = startX; x < length + startX; x++) {
         this.board[x][startY] = { marker: "S", ship: ship || createdShip };
       }
     }
+    
+    // Return true to indicate successful placement
+    return true;
   }
 
   receiveHit([x, y]) {
@@ -86,7 +99,7 @@ class Gameboard {
       this.board[x][y] = { marker: "X" };
       this.hits.push([x, y]);
       ship.hit();
-      return true;
+      return true
     }
   }
 
@@ -123,7 +136,9 @@ class Gameboard {
   // H -  -  -  -  -  -  -  -  -  -
   // I -  -  -  -  -  -  -  -  -  -
   // J -  -  -  -  -  -  -  -  -  -
-  isValid([x, y], length) {
+  isValid([x, y], length, ship) {
+    if (ship) length = ship.length;
+
     const regex = /^([0-9])$/; // use this to match numbers 0 through 9 since converted coords are in index form so -1
 
     //tests coordinates
@@ -136,19 +151,17 @@ class Gameboard {
   }
 
   // check that this new ship will not overlap with an existing ship, returns true if collision is present
-  checkShipCollision(startX, startY, length, isVertical, ship) {
+  checkShipCollision([startX, startY], length, isVertical, ship) {
     if (ship) length = ship.length;
 
     if (isVertical) {
       for (let i = startX; i < startX + length; i++) {
         //loop through the cells the ship would be placed on...
-        if (this.board[i][startY] === null) return false; //if the cell is null, then no ship is present, no collision
-        if (this.board[startX][i].marker === "S") return true; //"s" means ship is present, collison true
+        if (this.board[i][startY] !== null) return true; //if the cell is null, then no ship is present, no collision
       }
     } else {
       for (let i = startY; i < startY + length; i++) {
-        if (this.board[startX][i] === null) return false;
-        if (this.board[startX][i].marker === "S") return true;
+        if (this.board[startX][i] !== null) return true;
       }
     }
   }
