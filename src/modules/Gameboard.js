@@ -179,7 +179,7 @@ class Gameboard {
 
   //when called, checks if all ships in this.ships have ship.sunk equal to true
   allShipsSunk() {
-    if (this.ships.some((ship) => ship.sunk === false)) return this.ships;
+    if (this.ships.some((ship) => ship.sunk === false)) return false
     return true;
   }
 }

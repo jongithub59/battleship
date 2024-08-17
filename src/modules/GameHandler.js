@@ -49,10 +49,10 @@ class EventHandler {
   resetGame = () => {
     document
       .querySelector("#board-one")
-      .removeEventListener("click", this.clickHandler);
+      .removeEventListener("click", this.attackHandler);
     document
       .querySelector("#board-two")
-      .removeEventListener("click", this.clickHandler);
+      .removeEventListener("click", this.attackHandler);
     this.player = new Player("human");
     this.computer = new Player("cpu");
     this.activePlayer = this.player;
@@ -70,9 +70,15 @@ class EventHandler {
     if (marker === "X" || marker === "O") return; //if a hit location is clicked, return to allow new attempt
     const coordinate = [Number(x), Number(y)]; //create the coordinate, forcing them to be numbers
     this.inactivePlayer.board.receiveHit(coordinate);
+    //if allShipsSunk() returns true then the active player wins so begin the endgame funcs
+    if(this.inactivePlayer.board.allShipsSunk()) {
+      const winner = this.activePlayer
+      this.endGame(winner)
+      return
+    }
+    this.updateBoards()
     this.switchTurns();
     this.computerAttack()
-    this.updateBoards();
   };
 
   // run a random computer attack after the player's turn
@@ -87,6 +93,12 @@ class EventHandler {
         break
       }
     }
+    if (this.player.board.allShipsSunk()) {
+      const winner = this.computer;
+      this.endGame(winner);
+      return;
+    }
+    this.updateBoards()
     this.switchTurns()
     return true
   }
@@ -101,6 +113,19 @@ class EventHandler {
       this.activePlayer = this.player;
       this.inactivePlayer = this.computer;
     }
+  }
+  endGame(winner) {
+    //update boards one last time and remove event listeners to prevent clicking after the game is over
+    this.updateBoards()
+    document
+      .querySelector("#board-one")
+      .removeEventListener("click", this.attackHandler);
+    document
+      .querySelector("#board-two")
+      .removeEventListener("click", this.attackHandler);
+    console.log(winner);
+    // send the winner to end game ui handler to display the winner in the UI
+    this.ui.revealEndGameUI(winner)
   }
 }
 

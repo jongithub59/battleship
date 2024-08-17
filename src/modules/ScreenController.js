@@ -37,10 +37,10 @@ class ScreenController {
           const gridElement = document.createElement("div");
           gridElement.classList.add("box");
           if (cell) {
-            if (cell.marker === "S") {
+            if (cell.marker === "S") gridElement.classList.add("ship");
               // Only adds ship class to player's board to keep computers board hidden to the player
-              if (player.playerType === 'human') gridElement.classList.add("ship");
-            }
+              // if (player.playerType === 'human')
+            // }
             if (cell.marker === "O") gridElement.classList.add("miss");
             if (cell.marker === "X") gridElement.classList.add("hit");
             gridElement.dataset.marker = cell.marker //needs to be here since in error will occur if null is read
