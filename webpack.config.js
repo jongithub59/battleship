@@ -7,20 +7,21 @@ module.exports = {
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: '/'
+    publicPath: "/",
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.join(__dirname, "dist"),
     },
     compress: true,
     watchFiles: {
-      paths: ['src/**/*'], // Watch all files in the src folder
+      // Watch all files in the src folder and index and styles
+      paths: ["src/**/*", "dist/index.html", "dist/styles.css"],
       options: {
         usePolling: true, // Enable polling
-        interval: 300,    // Check every 300ms
+        interval: 300, // Check every 300ms
       },
-  }
+    },
   },
   module: {
     rules: [

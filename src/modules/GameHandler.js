@@ -6,15 +6,14 @@ const Player = require("./Player");
 class EventHandler {
   constructor() {
     this.ui = new UI();
-    this.player = new Player("human");
-    this.computer = new Player("cpu");
+    this.player = new Player("Player");
+    this.computer = new Player("CPU");
     this.activePlayer = this.player; // the player whose turn it is, making their move
     this.inactivePlayer = this.computer; //player who is having a move made on them
   }
   startGame() {
     //run setup funcs from ScreenController.js here since index.js will only import this file
-    this.ui.setupGame();
-    this.player.board.generateRandomBoard()
+    this.player.board.generateRandomBoard();
     this.computer.board.generateRandomBoard();
     this.ui.createPlayerBoard(this.player);
     this.ui.createComputerBoard(this.computer);
@@ -53,10 +52,11 @@ class EventHandler {
     document
       .querySelector("#board-two")
       .removeEventListener("click", this.attackHandler);
-    this.player = new Player("human");
-    this.computer = new Player("cpu");
+    this.player = new Player("Player");
+    this.computer = new Player("CPU");
     this.activePlayer = this.player;
     this.inactivePlayer = this.computer;
+    this.ui.endScreen.classList.add('hidden')
     this.startGame();
   };
 
@@ -72,7 +72,7 @@ class EventHandler {
     this.inactivePlayer.board.receiveHit(coordinate);
     //if allShipsSunk() returns true then the active player wins so begin the endgame funcs
     if(this.inactivePlayer.board.allShipsSunk()) {
-      const winner = this.activePlayer
+      const winner = this.activePlayer.playerType
       this.endGame(winner)
       return
     }
@@ -83,9 +83,9 @@ class EventHandler {
 
   // run a random computer attack after the player's turn
   computerAttack() {
-    if (this.activePlayer.playerType === 'cpu') {
+    if (this.activePlayer.playerType === 'CPU') {
      while (true) {
-      const x = Math.floor(Math.random() * 10)
+      const x = Math.floor(Math.random() * 10);
       const y = Math.floor(Math.random() * 10);
       console.log([x, y])
       //loop until the computer successfully lands a hit, to make sure attacks aren't wasted on already hit boxes  
@@ -94,7 +94,7 @@ class EventHandler {
       }
     }
     if (this.player.board.allShipsSunk()) {
-      const winner = this.computer;
+      const winner = this.computer.playerType;
       this.endGame(winner);
       return;
     }
@@ -106,7 +106,7 @@ class EventHandler {
 
   // advance to the next turn by swapping the active player
   switchTurns() {
-    if (this.activePlayer.playerType === "human") {
+    if (this.activePlayer.playerType === "Player") {
       this.activePlayer = this.computer;
       this.inactivePlayer = this.player;
     } else {
