@@ -39,7 +39,7 @@ body {
     width: 100%;
 }
 
-.winner-container {
+.turn-container, .winner-container {
     display: flex;
     margin: auto auto 40px;
     align-items: center;
@@ -48,6 +48,11 @@ body {
     width: 650px;
     color: var(--text);
     letter-spacing: 3px;
+}
+
+.turn-container {
+    font-size: 60px;
+    margin-top: 0;
 }
 
 .game-container {

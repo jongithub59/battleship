@@ -17,6 +17,7 @@ class EventHandler {
     this.computer.board.generateRandomBoard();
     this.ui.createPlayerBoard(this.player);
     this.ui.createComputerBoard(this.computer);
+    this.ui.updateTurnDisplay(this.activePlayer);
 
     document
       .querySelector(".reset-button")
@@ -56,7 +57,7 @@ class EventHandler {
     this.computer = new Player("CPU");
     this.activePlayer = this.player;
     this.inactivePlayer = this.computer;
-    this.ui.endScreen.classList.add('hidden')
+    this.ui.endScreen.classList.add('hidden') //hide the endgame UI
     this.startGame();
   };
 
@@ -78,7 +79,10 @@ class EventHandler {
     }
     this.updateBoards()
     this.switchTurns();
-    this.computerAttack()
+    //add a short delay before the computer attacks so it looks like the computing is thinking
+    setTimeout(() => {
+      this.computerAttack();
+    }, 1000);
   };
 
   // run a random computer attack after the player's turn
@@ -104,7 +108,7 @@ class EventHandler {
   }
   }
 
-  // advance to the next turn by swapping the active player
+  // advance to the next turn by swapping the active player and display the turn
   switchTurns() {
     if (this.activePlayer.playerType === "Player") {
       this.activePlayer = this.computer;
@@ -113,7 +117,9 @@ class EventHandler {
       this.activePlayer = this.player;
       this.inactivePlayer = this.computer;
     }
+    this.ui.updateTurnDisplay(this.activePlayer);
   }
+
   endGame(winner) {
     //update boards one last time and remove event listeners to prevent clicking after the game is over
     this.updateBoards()

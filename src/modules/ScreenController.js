@@ -3,6 +3,7 @@
 class ScreenController {
     constructor () {
       this.endScreen = document.querySelector(".winner-container"); 
+      this.turnDisplay = document.querySelector('.turn-container')
     }
 
     createPlayerBoard(player) {
@@ -52,6 +53,11 @@ class ScreenController {
         });
         i++; //increments after each row is complete
       });
+    }
+
+    updateTurnDisplay(activePlayer) {
+      if (activePlayer.playerType === 'CPU') return this.turnDisplay.textContent = `Computer attacking...`
+      this.turnDisplay.textContent = `It's the ${activePlayer.playerType}'s turn`
     }
 
     revealEndGameUI(winner) {
