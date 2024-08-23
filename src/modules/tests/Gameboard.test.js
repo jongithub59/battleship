@@ -173,21 +173,28 @@ describe("test Gameboard", () => {
   });
 
    it("test that this.ships returns all ships on the board", () => {
-     testBoard.placeShip([4, 2], 5);
-     testBoard.placeShip([1, 3], 3);
-     testBoard.placeShip([5, 2], 2);
-     const ships = testBoard.ships;
-     expect(ships[0]).toEqual({
+    //ships array already initalized with ships so no need to place some
+     expect(testBoard.ships[0]).toEqual({
        hits: 0,
        length: 5,
        sunk: false,
      });
-     expect(ships[1]).toEqual({
+     expect(testBoard.ships[1]).toEqual({
+       hits: 0,
+       length: 4,
+       sunk: false,
+     });
+     expect(testBoard.ships[2]).toEqual({
        hits: 0,
        length: 3,
        sunk: false,
      });
-     expect(ships[2]).toEqual({
+     expect(testBoard.ships[3]).toEqual({
+       hits: 0,
+       length: 3,
+       sunk: false,
+     });
+     expect(testBoard.ships[4]).toEqual({
        hits: 0,
        length: 2,
        sunk: false,
@@ -195,6 +202,7 @@ describe("test Gameboard", () => {
    });
 
   it("create allShipsSunk() func that checks if all ships are sunk", () => {
+    testBoard.ships = [] //ships array needs to be cleared for this test specifically
     testBoard.placeShip([1, 0], 4);
     testBoard.receiveHit([1, 0]);
     testBoard.receiveHit([1, 1]);

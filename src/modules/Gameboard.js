@@ -9,22 +9,24 @@ class Gameboard {
     this.ships = [];
     this.misses = [];
     this.hits = [];
+    this.initShips();
   }
 
-  // Place the 5 different ships of Battleship randomly across the board
-  generateRandomBoard() {
+  // create and append the 5 battleship ship to the ships array
+  initShips() {
     const carrier = new Ship(5);
     const battleship = new Ship(4);
     const destroyer = new Ship(3);
     const submarine = new Ship(3);
     const patrolBoat = new Ship(2);
 
-    const ships = [];
+    this.ships.push(carrier, battleship, destroyer, submarine, patrolBoat);
+  }
 
-    ships.push(carrier, battleship, destroyer, submarine, patrolBoat);
-
+  // Place the 5 different ships of Battleship randomly across the board
+  generateRandomBoard() {
     // loop through each ship to generate new coordinates and orientation until valid ships are placed
-    ships.forEach((ship) => {
+    this.ships.forEach((ship) => {
       while (true) {
         const startX = Math.floor(Math.random() * 10);
         const startY = Math.floor(Math.random() * 10);
@@ -47,7 +49,7 @@ class Gameboard {
     // Loop until the ship is placed successfully
     while (true) {
       // Check if the coordinates + length are within valid bounds
-      if (!this.isValid([startX, startY], length, ship)) {
+      if (!this.isValid([startX, startY], length, isVertical, ship)) {
         // If not valid, return false
         return false;
       }
@@ -67,21 +69,20 @@ class Gameboard {
       createdShip = new Ship(length);
       this.ships.push(createdShip);
     } else {
-      this.ships.push(ship);
       length = ship.length;
     }
     // Place the ship on the board horizontally or vertically
     if (isVertical === false) {
-      //increment the coordinate related to y-axis to mark cells vertically to make the ship 
+      //increment the coordinate related to y-axis to mark cells vertically to make the ship
       for (let y = startY; y < length + startY; y++) {
-        this.board[startX][y] = { marker: "S", ship: ship || createdShip,};
+        this.board[startX][y] = { marker: "S", ship: ship || createdShip };
       }
     } else {
       for (let x = startX; x < length + startX; x++) {
         this.board[x][startY] = { marker: "S", ship: ship || createdShip };
       }
     }
-    
+
     // Return true to indicate successful placement
     return true;
   }
@@ -91,7 +92,7 @@ class Gameboard {
     if (this.board[x][y] === null) {
       this.board[x][y] = { marker: "O" };
       this.misses.push([x, y]);
-      return true
+      return true;
     } else if (this.board[x][y].marker === "X") {
       return false;
     } else if (this.board[x][y].marker === "S") {
@@ -99,7 +100,7 @@ class Gameboard {
       this.board[x][y] = { marker: "X" };
       this.hits.push([x, y]);
       ship.hit();
-      return true
+      return true;
     }
   }
 
@@ -136,15 +137,20 @@ class Gameboard {
   // H -  -  -  -  -  -  -  -  -  -
   // I -  -  -  -  -  -  -  -  -  -
   // J -  -  -  -  -  -  -  -  -  -
-  isValid([x, y], length, ship) {
+  isValid([x, y], length, isVertical, ship) {
     if (ship) length = ship.length;
 
     const regex = /^([0-9])$/; // use this to match numbers 0 through 9 since converted coords are in index form so -1
 
-    //tests coordinates
+    //check if converted coords fit on 10x10 board
     if (regex.test(x) && regex.test(y)) {
-      //check if converted coords fit on 10x10 board
-      if (y + length >= 10 || x + length >= 10) return false; //then check if it will go off board bounds by adding the length
+      //then check if it will go off board bounds by adding the length
+      if (isVertical) {
+        //needs to be 10 since length starts at the coordinate, not after ex: A9(0, 8) with len 2 covers both A9 and A10
+        if (x + length > 10) return false;
+      } else {
+        if (y + length > 10) return false
+      }
       return true; //ship fulfills both conditions, return true
     }
     return false; //ship is not within the 10x10 board (ex: A11) return false
@@ -179,7 +185,7 @@ class Gameboard {
 
   //when called, checks if all ships in this.ships have ship.sunk equal to true
   allShipsSunk() {
-    if (this.ships.some((ship) => ship.sunk === false)) return false
+    if (this.ships.some((ship) => ship.sunk === false)) return false;
     return true;
   }
 }

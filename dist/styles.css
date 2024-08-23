@@ -107,6 +107,14 @@ body {
     background-color: rgb(45, 45, 139);
 }
 
+.valid {
+    background-color: green;
+}
+
+.invalid {
+    background-color: red;
+}
+
 .box:hover {
     filter: brightness(80%);
     transition: .2s;
