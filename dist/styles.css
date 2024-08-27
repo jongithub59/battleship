@@ -12,6 +12,7 @@
 
 :root {
     --blue: #20525a;
+    --light-blue: aqua;
     --text: silver;
 }
 
@@ -29,28 +30,33 @@ body {
 
 .header {
     display: flex;
-    margin: auto;
+    margin: 0 auto;
     align-items: center;
     justify-content: center;
     font-size: 120px;
     color: var(--text);
     letter-spacing: 3px;
-    height: 300px;
+    height: 250px;
     width: 100%;
 }
 
-.turn-container, .winner-container {
+.placement-container, .turn-container, .winner-container {
     display: flex;
     margin: auto auto 40px;
     align-items: center;
     justify-content: center;
     font-size: 100px;
-    width: 650px;
+    width: 750px;
     color: var(--text);
     letter-spacing: 3px;
 }
 
-.turn-container {
+.placement-container {
+    justify-content: space-evenly;
+    width: 900px;
+}
+
+.placement-container, .turn-container {
     font-size: 60px;
     margin-top: 0;
 }
@@ -63,7 +69,8 @@ body {
     align-items: center;
     height: 900px;
     width: 70%;
-    background-color: aqua;
+    background-color: var(--light-blue);
+    border-radius: 10px;
 }
 
 .board-container {
@@ -115,24 +122,43 @@ body {
     background-color: red;
 }
 
-.box:hover {
+.box-hover:hover, .vertical-button:hover, .reset-button:hover {
     filter: brightness(80%);
     transition: .2s;
+}
+
+.box:hover, .vertical-button:hover, .reset-button:hover {
     cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.reset-button, .vertical-button {
+    background-color: var(--blue);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 30px;
+    font-size: 40px;
+    color: var(--text);
+    letter-spacing: 0px;
+    align-items: center;
+    justify-content: center;
 }
 
 .reset-button {
     display: flex;
-    cursor: pointer;
-    margin: 10px;
-    height: 100px;
-    width: 250px;
-    background-color: var(--blue);
-    color: var(--text);
-    align-items: center;
-    justify-content: center;
-    font-size: 50px;
-    letter-spacing: 4px;
+    width: 150px;
+    align-self: center;
+}
+
+.vertical-button p {
+    font-size: 35px;
+    text-align: center;
 }
 
 .hidden {

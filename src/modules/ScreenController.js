@@ -2,6 +2,8 @@
 //set up initial User Interface DOM elements so event listeners can be added to them
 class ScreenController {
   constructor() {
+    this.placementDisplay = document.querySelector(".placement-container")
+    this.verticalButton = document.querySelector(".vertical-button")
     this.endScreen = document.querySelector(".winner-container");
     this.turnDisplay = document.querySelector(".turn-container");
   }
@@ -37,6 +39,7 @@ class ScreenController {
       array.forEach((cell) => {
         const gridElement = document.createElement("div");
         gridElement.classList.add("box");
+        if (player.playerType === 'CPU') gridElement.classList.add('box-hover')
         if (cell) {
           if (cell.marker === "S") {
             // Only adds ship class to player's board to keep computers board hidden to the player
@@ -64,6 +67,36 @@ class ScreenController {
     highlightedCells.forEach((cell) => {
       cell.classList.remove("valid", "invalid");
     });
+  }
+
+  // tells the player what ship they will be placing through text based on the ships array index
+  updatePlacementDisplay(shipIndex) {
+    if (this.placementDisplay.classList.contains('hidden')) //ensures ship palcement UI appears after reset
+      this.placementDisplay.classList.remove('hidden')
+      this.verticalButton.classList.remove("hidden");
+    switch (shipIndex) {
+      case 0:
+        this.placementDisplay.textContent = `Place your Carrier`;
+        break;
+      case 1:
+        this.placementDisplay.textContent = `Place your Battleship`;
+        break;
+      case 2:
+        this.placementDisplay.textContent = `Place your Destroyer`;
+        break;
+      case 3:
+        this.placementDisplay.textContent = `Place your Submarine`;
+        break;
+      case 4:
+        this.placementDisplay.textContent = `Place your Patrol Boat`;
+        break;
+      }
+  }
+
+  //hides the placement related UI, used when placemnet is done
+  hidePlacementDisplay() {
+    this.placementDisplay.classList.add('hidden')
+    this.verticalButton.classList.add('hidden')
   }
 
   updateTurnDisplay(activePlayer) {

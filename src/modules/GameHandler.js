@@ -15,10 +15,10 @@ class GameHandler {
   }
   startGame() {
     //run setup funcs from ScreenController.js here since index.js will only import this file
-    // this.player.board.generateRandomBoard();
     this.computer.board.generateRandomBoard();
     this.ui.createPlayerBoard(this.player);
     this.ui.createComputerBoard(this.computer);
+    this.ui.updatePlacementDisplay(this.currentShipIndex)
     this.ui.updateTurnDisplay(this.activePlayer);
 
     document
@@ -66,27 +66,26 @@ class GameHandler {
     document
       .querySelector("#board-two")
       .removeEventListener("click", this.attackHandler);
-    document.removeEventListener('keydown', this.changeVertical) //remove orientation changing event listener on reset to prevent weird behavior
+    this.ui.verticalButton.removeEventListener('click', this.changeVertical) //remove orientation changing event listener on reset to prevent weird behavior
     this.player = new Player("Player");
     this.computer = new Player("CPU");
     this.activePlayer = this.player;
     this.inactivePlayer = this.computer;
     this.currentShipIndex = 0
     this.isVertical = false
+    this.ui.turnDisplay.classList.add("hidden");
     this.ui.endScreen.classList.add("hidden"); //hide the endgame UI
     this.startGame();
   };
 
   //adds listener to allow ship orientation to be changed
   addOrientationListener() {
-    document.addEventListener("keydown", this.changeVertical);
+    this.ui.verticalButton.addEventListener("click", this.changeVertical);
   }
 
 
-  changeVertical = (e) => {
-    if (e.key === "r") {
+  changeVertical = () => {
       this.isVertical = !this.isVertical;
-    }
   }
 
   //collect needed info from DOM board datasets and run preview funcs with that info
@@ -171,7 +170,10 @@ class GameHandler {
     if (this.player.board.placeShip([x, y], "", this.isVertical, ship)) { //executes folloing code if placement is successful
       this.ui.createPlayerBoard(this.player); // Refresh the board to show the placed ship
         this.currentShipIndex++; // increment so next ship to be placed will be the next ship in ship array
-        if (this.currentShipIndex === this.player.board.ships.length) { //prevent placement by removeing listener when 5 placements are done
+        this.ui.updatePlacementDisplay(this.currentShipIndex)
+        if (this.currentShipIndex === this.player.board.ships.length) { //prevent placement by removing listener when 5 placements are done
+          this.ui.hidePlacementDisplay()
+          this.ui.turnDisplay.classList.remove('hidden')
           this.removePlacementListeners();
           this.addBoardListeners() //add board listeners now that player ships have been placed
           this.ui.updateTurnDisplay(this.activePlayer);
