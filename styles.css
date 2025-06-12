@@ -125,6 +125,9 @@ body {
 .box-hover:hover, .vertical-button:hover, .reset-button:hover {
     filter: brightness(80%);
     transition: .2s;
+}
+
+.box:hover, .vertical-button:hover, .reset-button:hover {
     cursor: pointer;
 }
 
