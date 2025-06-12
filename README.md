@@ -4,11 +4,11 @@
 
 A playable battleship game against a computer opponent. From the Odin Project [curriculum](https://www.theodinproject.com/lessons/node-path-javascript-battleship)
 
-Live preview [here](https://jongithub59.github.io/project-name/). (Not yet working)
+Live preview [here](https://jongithub59.github.io/battleship/). 
 
 ## To-do:
 
-* Need to host app using GitHub Pages to get the live preview working 
+* Finalize polishing to make the game look as pretty as possible (Game functionality finished) 
 
 ## Features:
 
