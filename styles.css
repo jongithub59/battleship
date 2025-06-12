@@ -1,0 +1,165 @@
+@font-face {
+    font-family: MainFont;
+    src: url(./fonts/Military\ Poster.ttf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: MainFont;
+}
+
+:root {
+    --blue: #20525a;
+    --light-blue: aqua;
+    --text: silver;
+}
+
+body {
+    height: 100vh;
+    background-color: var(--blue);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+    color: var(--text);
+    letter-spacing: 3px;
+    height: 250px;
+    width: 100%;
+}
+
+.placement-container, .turn-container, .winner-container {
+    display: flex;
+    margin: auto auto 40px;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    width: 750px;
+    color: var(--text);
+    letter-spacing: 3px;
+}
+
+.placement-container {
+    justify-content: space-evenly;
+    width: 900px;
+}
+
+.placement-container, .turn-container {
+    font-size: 60px;
+    margin-top: 0;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 25px;
+    align-items: center;
+    height: 900px;
+    width: 70%;
+    background-color: var(--light-blue);
+    border-radius: 10px;
+}
+
+.board-container {
+    width: 100%;
+    display: flex;
+    justify-content:space-between;
+}
+
+.board {
+    display: grid;
+    margin: 20px;
+    height: 700px;
+    width: 700px;
+    grid-template-rows: repeat(10, 70px);
+    grid-template-columns: repeat(10, 70px);
+    align-content: center;
+    justify-content: center;
+}
+
+.box {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    height: 64px;
+    width: 64px;
+    background-color: aqua;
+    border: 3px solid black;
+    align-items: center;
+    justify-content: center;
+}
+
+.ship {
+    background-color: darkgrey;
+}
+
+.hit {
+    background-color: rgb(180, 66, 66);
+}
+
+.miss {
+    background-color: rgb(45, 45, 139);
+}
+
+.valid {
+    background-color: green;
+}
+
+.invalid {
+    background-color: red;
+}
+
+.box-hover:hover, .vertical-button:hover, .reset-button:hover {
+    filter: brightness(80%);
+    transition: .2s;
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.reset-button, .vertical-button {
+    background-color: var(--blue);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 30px;
+    font-size: 40px;
+    color: var(--text);
+    letter-spacing: 0px;
+    align-items: center;
+    justify-content: center;
+}
+
+.reset-button {
+    display: flex;
+    width: 150px;
+    align-self: center;
+}
+
+.vertical-button p {
+    font-size: 35px;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+
