@@ -21,7 +21,7 @@ body {
     background-color: var(--blue);
 }
 
-.content {
+#content {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -67,8 +67,8 @@ body {
     margin: auto;
     padding: 25px;
     align-items: center;
-    height: 900px;
-    width: 70%;
+    width: 100%;
+    max-width: 1600px;
     background-color: var(--light-blue);
     border-radius: 10px;
 }
@@ -76,28 +76,28 @@ body {
 .board-container {
     width: 100%;
     display: flex;
-    justify-content:space-between;
+    gap: 20px;
+    justify-content: center;
 }
 
 .board {
     display: grid;
     margin: 20px;
-    height: 700px;
-    width: 700px;
-    grid-template-rows: repeat(10, 70px);
-    grid-template-columns: repeat(10, 70px);
-    align-content: center;
+    width: 80%;
+    aspect-ratio: 1 / 1;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    align-items: center;
     justify-content: center;
+    gap: 3px;
 }
 
 .box {
     display: flex;
-    align-self: center;
-    justify-self: center;
-    height: 64px;
-    width: 64px;
+    height: 100%;
+    width: 100%;
     background-color: aqua;
-    border: 3px solid black;
+    border: 2px solid black;
     align-items: center;
     justify-content: center;
 }
@@ -165,4 +165,54 @@ body {
     display: none;
 }
 
+@media (max-width: 950px) {
+    .board-container {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 950px) and (min-width: 700px) {
+    .board {
+        width: 60%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .header {
+        font-size: 60px;
+        height: auto;
+        text-align: center;
+    }
+
+    .placement-container, .turn-container, .winner-container {
+        font-size: 40px;
+        width: 100%;
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+    .reset-button, .vertical-button {
+        font-size: 25px;
+        padding: 15px;
+        margin: 15px;
+        /* width: auto; */
+    }
+
+    .buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .game-container {
+        padding: 10px;
+        margin: 25px auto;
+    }
+}
+
+@media (max-width: 1100px) {
+    .game-container {
+        margin: 0 auto;
+    }
+}
 
